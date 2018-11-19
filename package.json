@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^3.0.9"
+    "electron": "^3.0.9",
+    "jquery": "^3.3.1"
   }
 }
