@@ -7,9 +7,28 @@
 	<form>
 		<div>
 			<label>Agregar elemento</label>
-			<input type="text" id="item" autofocus="">
+			<textarea id="urls"></textarea> 
 		</div>
 		<button type="submit">Agregar</button>
 	</form>
+	<script>
+		const electron = require('electron');
+		const {ipcRenderer} = electron;
+
+		var form = document.querySelector('form');
+
+		form.addEventListener('submit', submitForm);
+
+		function submitForm(e) {
+			e.preventDefault();
+			//cambiar item por el contenido de todo el formulario despues de probar
+			var itemvar = document.querySelector('#urls').value;
+			ipcRenderer.send('item:add', itemvar);
+		}
+
+		$( document ).ready(function() {
+		    
+		});
+	</script>
 </body>
 </html>

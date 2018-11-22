@@ -32,7 +32,7 @@ app.on('ready', function(){
 
 //Manejo de ventana para agregar elementos
 
-/*
+
 function createAddWindow() {
 	addWindow = new BrowserWindow({
 		width: 300,
@@ -51,16 +51,18 @@ function createAddWindow() {
 		addWindow = null;
 	});
 }
-*/
+
 
 //Tomar los valores que vienen desde el form
 
-ipcMain.on('item:add', function(e, itemvar) {
-	//console.log(itemvar);
+ipcMain.on('item:add', function(e, itemvar) {	
+	/*
 	var fs = require('fs');
 	try { fs.writeFileSync('outputhtml/test.html', itemvar, 'utf-8'); }
 	catch(e) { alert('Failed to save the file !'); }
+	*/
 	mainWindow.webContents.send('item:add', itemvar);
+	addWindow.close();
 
 });
 
@@ -70,8 +72,7 @@ ipcMain.on('item:add', function(e, itemvar) {
 const mainMenuTemplate = [
 	{
 		label: 'File',
-		submenu: [
-		/*
+		submenu: [		
 			{
 				label: 'Agregar Elemento',
 				click() {
@@ -80,8 +81,7 @@ const mainMenuTemplate = [
 			},
 			{
 				label: 'Clear'
-			},
-			*/
+			},		
 			{
 				label:'Cerrar',
                 click: _ =>{

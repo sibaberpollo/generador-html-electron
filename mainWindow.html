@@ -5,31 +5,62 @@
 	<script>window.$ = window.jQuery = require('jquery');</script>
 </head>
 <body>
-	<form>
-		<div>
-			<label>Agregar elemento</label>
-			<input type="text" id="item" autofocus="">
-		</div>
-		<button type="submit">Agregar</button>
-	</form>
+	<h1>Ventana principal</h1>
 	<script>
 		const electron = require('electron');
 		const {ipcRenderer} = electron;
+		var apiUrl = 'http://culto.latercera.com/wp-json/wp/v2/';		
+		
+		ipcRenderer.on('item:add', function(e, itemvar){
+			//console.log(itemvar);
+			var contentNotas = {};
+			var urls = itemvar.split("\n");
+			var slug = []; 
 
-		var form = document.querySelector('form');
+			
+			$(urls).each(function(index, url){
+				//Obtener el slug de cada url de culto
+				var cleanUrl = url.trim();
+				var slugArray = cleanUrl.split("/");
+				slug[index] = slugArray[6];				
+			});
 
-		form.addEventListener('submit', submitForm);
+			console.log(slug);
+				
 
-		function submitForm(e) {
-			e.preventDefault();
-			//cambiar item por el contenido de todo el formulario despues de probar
-			var itemvar = document.querySelector('#item').value;
-			ipcRenderer.send('item:add', itemvar);
-		}
 
-		$( document ).ready(function() {
-		    
+			getPostsAndImages(slug);
+
+			function getPostsAndImages(slug) {
+				console.log(slug);
+				var esteslug  = slug.shift();
+
+				$.getJSON(apiUrl+'posts/?slug='+esteslug, function(data){
+					console.log(data);
+					contentNotas[data[0].id] = { id: data[0].id, post_title: data[0].title, featured_media : data[0].featured_media};
+					$.getJSON(apiUrl+'media/'+data[0].featured_media, function(media) {
+						var mediaUrl = media.media_details.sizes.medium.source_url;
+						contentNotas[data[0].id]['media_url'] = mediaUrl;
+						
+						if(slug.length > 0) {
+							getPostsAndImages(slug);
+						}else{
+							escribirListaPosts(contentNotas);
+						}
+					});
+
+				});
+					
+			}
+
+			function escribirListaPosts(contentNotas) {
+				console.log(contentNotas);
+			}
+
 		});
+
+		
+			
 	</script>
 </body>
 </html>
