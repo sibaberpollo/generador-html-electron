@@ -11,6 +11,7 @@ let addWindow;
 
 app.on('ready', function(){
 	mainWindow = new BrowserWindow({});
+	mainWindow.maximize();
 
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'mainWindow.html'),
@@ -28,17 +29,25 @@ app.on('ready', function(){
 	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 	Menu.setApplicationMenu(mainMenu);
 
+
+	screenElectron = electron.screen;
+
 });
 
 //Manejo de ventana para agregar elementos
 
 
 function createAddWindow() {
+	
+	var mainScreen = screenElectron.getPrimaryDisplay();
+	
+	var dimensions = mainScreen.size;
+
 	addWindow = new BrowserWindow({
-		width: 300,
-		height: 200,
+		width: 800,
+		height: 600,
 		title: 'Agregar elemento a la lista'
-	});
+	});	
 
 	addWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'addWindow.html'),
@@ -50,6 +59,9 @@ function createAddWindow() {
 	addWindow.on('close', function(){
 		addWindow = null;
 	});
+
+	
+	//console.log(dimensions.width + "x" + dimensions.height);
 }
 
 

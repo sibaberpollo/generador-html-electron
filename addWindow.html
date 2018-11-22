@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elemento del arreglo</title>
+	<title>Agregar enlaces</title>
+	<meta charset="UTF-8">
+	<script>window.$ = window.jQuery = require('jquery');</script>
+    <link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<style>
+		.lista-urls {
+			height: 400px;
+		}
+	</style>
 </head>
 <body>
 	<form>
-		<div>
-			<label>Agregar elemento</label>
-			<textarea id="urls"></textarea> 
-		</div>
-		<button type="submit">Agregar</button>
+		<div class="container">
+			<div class="row">
+				<h3>Agregar urls</h3>
+				<textarea id="urls" class="u-full-width lista-urls" rows="20"></textarea>				
+			</div>
+			<div class="row">
+				<button type="submit" class="button-primary">Agregar</button>
+			</div>
+		</div>		
 	</form>
 	<script>
 		const electron = require('electron');
@@ -22,13 +35,11 @@
 		function submitForm(e) {
 			e.preventDefault();
 			//cambiar item por el contenido de todo el formulario despues de probar
-			var itemvar = document.querySelector('#urls').value;
+			//var itemvar = document.querySelector('#urls').value;
+			var itemvar = $("#urls").val();
 			ipcRenderer.send('item:add', itemvar);
 		}
-
-		$( document ).ready(function() {
-		    
-		});
+		
 	</script>
 </body>
 </html>

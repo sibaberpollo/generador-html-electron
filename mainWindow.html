@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elemento del arreglo</title>
+	<title>Venetana Principal</title>
 	<script>window.$ = window.jQuery = require('jquery');</script>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<style type="text/css">
+		#gridNotas {
+			display: none;
+		}
+
+		#gridNotas img {
+			width: 100px;
+		}
+	</style>
 </head>
 <body>
-	<h1>Ventana principal</h1>
+	<div class="container">
+		<div class="row">
+			<h1>Notas</h1>
+			<table id="gridNotas" class="u-full-width">
+			  <thead>
+			    <tr>
+			      <th>Img Destacada</th>
+			      <th>Titulo</th>
+			    </tr>
+			  </thead>
+			  <tbody>			    
+			  </tbody>
+			</table>
+		</div>
+	</div>
 	<script>
 		const electron = require('electron');
 		const {ipcRenderer} = electron;
@@ -23,16 +48,13 @@
 				var cleanUrl = url.trim();
 				var slugArray = cleanUrl.split("/");
 				slug[index] = slugArray[6];				
-			});
-
-			console.log(slug);
-				
+			});		
 
 
 			getPostsAndImages(slug);
 
 			function getPostsAndImages(slug) {
-				console.log(slug);
+				//console.log(slug);
 				var esteslug  = slug.shift();
 
 				$.getJSON(apiUrl+'posts/?slug='+esteslug, function(data){
@@ -54,7 +76,12 @@
 			}
 
 			function escribirListaPosts(contentNotas) {
+				$("#gridNotas").show();				
 				console.log(contentNotas);
+				$.each(contentNotas, function(index, elemento) {
+					console.log(elemento);
+					$("#gridNotas tr:last").after('<tr><td><img src="'+elemento.media_url+'"></td><td>' + elemento.post_title.rendered + '</td></tr>');
+				});
 			}
 
 		});
